@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload and Gallery</title>
+    <link rel="stylesheet" href="https://unpkg.com/98.css" />
+</head>
+
+<body
+    style="padding: 20px;background-image: url(https://ih1.redbubble.net/image.3096465991.3627/flat,750x1000,075,t.u2.jpg);">
+
+    <div class="title-bar">
+        <div class="title-bar-text">A Title Bar</div>
+    </div>
+    <button><a href="/">Back</a></button>
+    <form id="uploadForm">
+        <input type="file" id="fileInput" name="file">
+        <button type="submit">Upload</button>
+    </form>
+
+    <script>
+        async function uploadImage(event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('fileInput');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            const response = await fetch('http://localhost:8000/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                fetchImages().then(displayImages);
+                fileInput.value = '';  // Clear the input after upload
+            } else {
+                alert('Failed to upload image');
+            }
+        }
+
+        document.getElementById('uploadForm').addEventListener('submit', uploadImage);
+
+    </script>
+</body>
+
+</html>
